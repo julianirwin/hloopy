@@ -1,0 +1,5 @@
+*.swp
+.eggs
+*.egg-info
+doc/
+.DS_Store

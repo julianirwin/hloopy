@@ -1,5 +1,9 @@
 *.swp
 .eggs
 *.egg-info
-doc/
 .DS_Store
+doc/Makefile
+doc/_build/doctrees/
+doc/extract.rst
+doc/index.rst
+doc/modules.rst

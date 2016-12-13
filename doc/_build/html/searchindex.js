@@ -1,0 +1,1 @@
+Search.setIndex({docnames:["extract","index","modules"],envversion:51,filenames:["extract.rst","index.rst","modules.rst"],objects:{},objnames:{},objtypes:{},terms:{extract:2,index:1,modul:[1,2],page:1,search:1},titles:["extract module","Welcome to hloopy&#8217;s documentation!","hloopy"],titleterms:{document:1,extract:0,hloopi:[1,2],indic:1,modul:0,tabl:1,welcom:1}})

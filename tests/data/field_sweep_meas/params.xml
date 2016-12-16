@@ -1,0 +1,84 @@
+<Cluster>
+<Name>Measurement Parameters</Name>
+<NumElts>20</NumElts>
+<String>
+<Name>Ch4 Name</Name>
+<Val>Ch4(V)</Val>
+</String>
+<String>
+<Name>Ch2 Name</Name>
+<Val>X(uV)</Val>
+</String>
+<String>
+<Name>Ch3 Name</Name>
+<Val>VMon(V)</Val>
+</String>
+<DBL>
+<Name>Ch4 Coefficient</Name>
+<Val>1.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Ch2 Coefficient</Name>
+<Val>10.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Ch3 Coefficient</Name>
+<Val>1.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Ch4 Range</Name>
+<Val>8.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Ch2 Range</Name>
+<Val>8.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Ch3 Range</Name>
+<Val>0.25000000000000</Val>
+</DBL>
+<String>
+<Name>Ch1 Name</Name>
+<Val>B(mT)</Val>
+</String>
+<DBL>
+<Name>Ch1 Coefficient</Name>
+<Val>1.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Ch1 Range</Name>
+<Val>4.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Field Amplitude (G)</Name>
+<Val>350.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Sweep Period (s)</Name>
+<Val>45.00000000000000</Val>
+</DBL>
+<I64>
+<Name>Sweeps</Name>
+<Val>3</Val>
+</I64>
+<I32>
+<Name>Pre-sweeps</Name>
+<Val>1</Val>
+</I32>
+<I64>
+<Name>Post-sweeps</Name>
+<Val>0</Val>
+</I64>
+<DBL>
+<Name>LS 425 Range (kG)</Name>
+<Val>1.00000000000000E-3</Val>
+</DBL>
+<DBL>
+<Name>B_center per B_pole</Name>
+<Val>0.72800000000000</Val>
+</DBL>
+<DBL>
+<Name>Digitizer Sample Rate</Name>
+<Val>1000.00000000000000</Val>
+</DBL>
+</Cluster>

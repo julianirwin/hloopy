@@ -4,9 +4,6 @@
 .DS_Store
 doc/Makefile
 doc/_build/doctrees/
-doc/extract.rst
-doc/index.rst
-doc/modules.rst
 hloopy/__pychache__/
 doc/__pychache__/
 

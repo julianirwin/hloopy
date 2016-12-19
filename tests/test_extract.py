@@ -1,11 +1,11 @@
 from hloopy import HLoop
-from hloopy.extract import ExtractPlot, coercivity, remanence
+from hloopy.extract import ExtractPlot, coercivity, remanence, saturation
 from nose.tools import assert_equal, assert_less
 import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-SHOW_PLOTS = True
+SHOW_PLOTS = False
 
 testpath = os.path.realpath(os.path.dirname(__file__))
 
@@ -32,7 +32,24 @@ class TestExtractPdn0:
         ep = ExtractPlot(self.hl)
         ep.extract(coercivity)
         ep.plot(self.ax)
-        plt.show()
+        if SHOW_PLOTS: plt.show()
 
     def test_remanence(self):
         res = remanence(self.hl)
+
+    def test_remanence_plot(self):
+        self.hl.plot(self.ax, ls='-')
+        ep = ExtractPlot(self.hl)
+        ep.extract(remanence)
+        ep.plot(self.ax)
+        if SHOW_PLOTS: plt.show()
+
+    def test_(self):
+        res = saturation(self.hl)
+
+    def test_remanence_plot(self):
+        self.hl.plot(self.ax, ls='-')
+        ep = ExtractPlot(self.hl)
+        ep.extract(saturation)
+        ep.plot(self.ax)
+        if SHOW_PLOTS: plt.show()

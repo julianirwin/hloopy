@@ -3,7 +3,7 @@ from nose.tools import assert_equal
 import os
 import matplotlib.pyplot as plt
 
-SHOW_PLOTS = True
+SHOW_PLOTS = False
 
 testpath = os.path.realpath(os.path.dirname(__file__))
 

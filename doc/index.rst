@@ -12,7 +12,6 @@ hysteresis loop data.
 Contents
 
 .. toctree::
-   :maxdepth: 2
 
   hloopy
 
@@ -23,8 +22,8 @@ Examples
 This module is largely based on the familiar numpy, pandas and matplotlib
 APIs we all know and love.
 
-.. code-block::
-  
+.. code-block:: python
+
    import hloopy as hlpy
    # Here is a tsv datafile with 5 comment lines and 3 data columns
    datapath = 'path/to/some/data.txt'

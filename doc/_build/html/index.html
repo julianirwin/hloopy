@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to hloopy’s documentation! &#8212; hloopy 0.0.0 documentation</title>
+    <title>HLoopy &#8212; hloopy 0.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -42,8 +42,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-hloopy-s-documentation">
-<h1>Welcome to hloopy&#8217;s documentation!<a class="headerlink" href="#welcome-to-hloopy-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="hloopy">
+<h1>HLoopy<a class="headerlink" href="#hloopy" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to the documentation for HLoopy, a python module for analyzing
+hysteresis loop data.</p>
 <p>Contents</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -56,6 +58,40 @@
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This module is largely based on the familiar numpy, pandas and matplotlib
+APIs we all know and love.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hloopy</span> <span class="kn">as</span> <span class="nn">hlpy</span>
+<span class="c1"># Here is a tsv datafile with 5 comment lines and 3 data columns</span>
+<span class="n">datapath</span> <span class="o">=</span> <span class="s1">&#39;path/to/some/data.txt&#39;</span>
+
+<span class="c1"># Create an HLoop object, the wrapper around a datafile</span>
+<span class="n">hl</span> <span class="o">=</span> <span class="n">hlpy</span><span class="o">.</span><span class="n">HLoop</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Indicate which columns are the x and y data (stimulus and response).</span>
+<span class="n">hl</span><span class="o">.</span><span class="n">setas</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Plotting the loop is easy:</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="c1"># Plot, with a few special params. All axes.plot() kwargs are allowed.</span>
+<span class="n">hl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># Now compute the coercivity, remanence and saturation:</span>
+<span class="kn">from</span> <span class="nn">hlpy.extract</span> <span class="kn">import</span> <span class="n">Coercivity</span><span class="p">,</span> <span class="n">Remanence</span><span class="p">,</span> <span class="n">Saturation</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">hl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">extracts</span> <span class="o">=</span> <span class="p">(</span><span class="n">Coercivity</span><span class="p">,</span> <span class="n">Remanence</span><span class="p">,</span> <span class="n">Saturation</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">extracts</span><span class="p">:</span>
+    <span class="n">e</span><span class="p">(</span><span class="n">hl</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -73,7 +109,10 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to hloopy&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#">HLoopy</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 <div class="relations">

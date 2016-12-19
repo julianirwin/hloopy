@@ -44,10 +44,10 @@ class TestExtractPdn0:
         ep.plot(self.ax)
         if SHOW_PLOTS: plt.show()
 
-    def test_(self):
+    def test_saturation(self):
         res = saturation(self.hl)
 
-    def test_remanence_plot(self):
+    def test_saturation_plot(self):
         self.hl.plot(self.ax, ls='-')
         ep = ExtractPlot(self.hl)
         ep.extract(saturation)

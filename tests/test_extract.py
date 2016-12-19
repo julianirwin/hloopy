@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-SHOW_PLOTS = True
+SHOW_PLOTS = False
 
 testpath = os.path.realpath(os.path.dirname(__file__))
 

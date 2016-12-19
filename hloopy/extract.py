@@ -34,6 +34,7 @@ class ExtractBase:
         Returns:
             Same as `matplotlib.axes.plot`
         """
+
         ax.plot(self.xs, self.ys, label=self.label_short, **kwargs)
 
 
@@ -47,6 +48,7 @@ def coercivity(hloop, avg_width=10):
     Returns:
         extracted_params (hloop.Extract)
     """
+
     x, y = np.array(hloop.x()), np.array(hloop.y())
     N = len(y)
     yc = y - y.mean()  # y-centered
@@ -67,13 +69,8 @@ def coercivity(hloop, avg_width=10):
 class Coercivity(ExtractBase):
     """Find the coercivity of an hloop, determined as the x-intercepts of
     each (centered with `y -= y.mean()`) branch.
-
-    Args:
-        hloop (hloopy.hloop): Hloop to be operated on
-
-    Returns:
-        extracted_params (hloop.Extract)
     """
+
     def __init__(self, hloop, avg_width=10):
         self.label = 'coercivity'
         self.label_short = 'Hc'
@@ -96,6 +93,10 @@ class Coercivity(ExtractBase):
 
 
 class Remanence(ExtractBase):
+    """Find the remanence of an hloop, determined as the y-intercepts of
+    each branch.
+    """
+
     def __init__(self, hloop, avg_width=10):
         self.label = 'remanence'
         self.label_short = 'Mrem'
@@ -139,13 +140,23 @@ class Remanence(ExtractBase):
 
 
 class Saturation(ExtractBase):
-    def __init__(self, hloop, avg_width=10):
+    """Find the positive and negative saturaiton values of the hysteresis loop
+    using a counting method. For both the positive and negative halves of the
+    loop (in the y direction) compute a histogram. At saturation there will be
+    many more points per bin than in the switching region.  Find the bin with
+    the most points pmax, and define threshold as `pthresh = thresh * pmax`.
+    The saturation is the average value of all the points in the bins with
+    height greater than `ptresh`. Pass `bins` or `thresh` when initializing 
+    this class if you wish.
+    """
+
+    def __init__(self, hloop, bins=50, thresh=0.25):
         self.label = 'Saturation'
         self.label_short = 'Sat'
         self.hloop = hloop
 
         x, y = np.array(self.hloop.x()), np.array(self.hloop.y())
-        extract_dict = self.saturation(x, y, avg_width)
+        extract_dict = self.saturation(x, y, bins=bins, thresh=thresh)
 
         self.avg_val = extract_dict['avg_val']
         self.xcoords = self.xs = extract_dict['xcoords']

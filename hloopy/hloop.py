@@ -23,6 +23,12 @@ class HLoop:
         return len(self.df.columns)
 
     def x(self):
+        """Get this HLoop's x-axis data. In a custom subclass of
+        hloopy.HLoop this can be overridden to allow custom 
+        transformation/manipulation of the x data. The only
+        requirement is that it returns an numpy.ndarray like object
+        that will have the same length as the one HLoop.y() returns.
+        """
         try:
             xcol = self.xcol[0]
             return self.df.ix[:, xcol]
@@ -30,6 +36,12 @@ class HLoop:
             return self.df.ix[:, 0]
 
     def y(self):
+        """Get this HLoop's y-axis data. In a custom subclass of
+        hloopy.HLoop this can be overridden to allow custom 
+        transformation/manipulation of the y data. The only
+        requirement is that it returns an numpy.ndarray like object
+        that will have the same length as the one HLoop.x() returns.
+        """
         try:
             ycol = self.ycol[0]
             return self.df.ix[:, ycol]

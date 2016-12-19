@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from hloopy.util import rightpad, find_all
+from hloopy.util import rightpad
 
 
 class HLoop:
@@ -31,13 +31,28 @@ class HLoop:
 
     def y(self):
         try:
-            ycol = self.ycol
-            ycol = ycol if len(ycol) > 1 else ycol[0]
+            ycol = self.ycol[0]
             return self.df.ix[:, ycol]
         except (AttributeError, ValueError):
             return self.df.ix[:, 1]
 
     def setas(self, *args, **kwargs):
+        """Mark which columns should be respectively set as the 
+        x-axis and y-axis data. There are ways to call this function:
+
+          - Pass a single string which has a length equal to the number of
+            columns in this HLoop's datafile. A '.' represents an unused
+            column, 'x' and 'y' represent the columns to mark as x and y.
+            For example if there are five columns: 
+
+                `setas('..x.y')`
+
+          - Use the kwargs 'x' and 'y' whose values are the int 
+            indices of the x and y columns within the datafile:
+
+                `setas(x=2, y=3)`
+
+        """
         # Do nothing if no args are passed.
         if len(args) == 0:
             return
@@ -50,11 +65,12 @@ class HLoop:
             else:
                 s = rightpad(s, '.', self.num_cols())
                 self.xcol = np.array([s.find('x')])
-                self.ycol = np.array(list(find_all(s, 'y')))
+                self.ycol = np.array([s.find('y')])
         # Otherwise treat kwargs as the column specifier
         else:
-            self.xcol = np.array(kwargs.get('x', None))
-            self.ycol = np.array(kwargs.get('y', None))
+            self.xcol = int(np.array(kwargs.get('x', None)))
+            self.ycol = int(np.array(kwargs.get('y', None)))
+
 
     def plot(self, ax, plotf='plot', **kwargs):
         """Plot hloop onto a `matploblib.axes`. The columns that are

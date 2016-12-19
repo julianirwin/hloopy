@@ -1,5 +1,5 @@
 from hloopy import HLoop
-from nose.tools import assert_equal
+from nose.tools import assert_equal, raises
 import os
 import matplotlib.pyplot as plt
 
@@ -40,9 +40,3 @@ class TestHLoopPupPdn:
         self.hl.setas('x.y')
         self.hl.plot(self.ax)
         if SHOW_PLOTS: plt.show()
-
-    def test_setas_dict_str_twoy(self):
-        self.hl.setas('xyy')
-        self.hl.plot(self.ax)
-        if SHOW_PLOTS: plt.show()
-

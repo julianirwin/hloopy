@@ -1,11 +1,11 @@
 from hloopy import HLoop
-from hloopy.extract import ExtractPlot, coercivity, remanence, saturation
+from hloopy.extract import (coercivity, Coercivity, Remanence, Saturation)
 from nose.tools import assert_equal, assert_less
 import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-SHOW_PLOTS = False
+SHOW_PLOTS = True
 
 testpath = os.path.realpath(os.path.dirname(__file__))
 
@@ -27,29 +27,26 @@ class TestExtractPdn0:
     def test_coercivity(self):
         res = coercivity(self.hl)
 
-    def test_coercivity_plot(self):
+    def test_coercivity_function_plot(self):
         self.hl.plot(self.ax, ls='-')
-        ep = ExtractPlot(self.hl)
-        ep.extract(coercivity)
-        ep.plot(self.ax)
+        hc_extract = coercivity(self.hl)
+        hc_extract.plot(self.ax, ls='none', marker='o')
         if SHOW_PLOTS: plt.show()
 
-    def test_remanence(self):
-        res = remanence(self.hl)
-
-    def test_remanence_plot(self):
+    def test_coercivity_class_plot(self):
         self.hl.plot(self.ax, ls='-')
-        ep = ExtractPlot(self.hl)
-        ep.extract(remanence)
-        ep.plot(self.ax)
+        hc_extract = Coercivity(self.hl)
+        hc_extract.plot(self.ax, ls='none', marker='o')
         if SHOW_PLOTS: plt.show()
 
-    def test_saturation(self):
-        res = saturation(self.hl)
-
-    def test_saturation_plot(self):
+    def test_remanence_class_plot(self):
         self.hl.plot(self.ax, ls='-')
-        ep = ExtractPlot(self.hl)
-        ep.extract(saturation)
-        ep.plot(self.ax)
+        mr_extract = Remanence(self.hl)
+        mr_extract.plot(self.ax, ls='none', marker='o')
+        if SHOW_PLOTS: plt.show()
+
+    def test_saturation_class_plot(self):
+        self.hl.plot(self.ax, ls='-')
+        sat_extract = Saturation(self.hl)
+        sat_extract.plot(self.ax, alpha=0.7, zorder=10)
         if SHOW_PLOTS: plt.show()

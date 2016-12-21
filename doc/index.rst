@@ -53,6 +53,18 @@ APIs we all know and love.
    plt.close()
 
 
+Todo
+----
+
+  - Plot many on a grid.
+  - CLI
+  - Test custom data manipulation in hloopy.HLoop.x() and y().
+  - Stoner model module
+  - Write extracts to file.
+  - Extracts only plot.
+  - Add targeting.
+
+
 
 
 Indices and tables

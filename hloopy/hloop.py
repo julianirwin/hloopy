@@ -100,6 +100,8 @@ class HLoop:
 
         """
         f = getattr(ax, plotf)
+        styles = {'color': 'darkslategrey'}
+        styles.update(kwargs)
         try:
             x = self.df.ix[:, self.xcol]
             y = self.df.ix[:, self.ycol]
@@ -107,8 +109,8 @@ class HLoop:
         except (AttributeError, ValueError):
             x = self.df.ix[:, 0]
             if self.num_cols() == 1:
-                res = f(x, **kwargs)
+                res = f(x, **styles)
             else:
                 y = self.df.ix[:, 1]
-                res = f(x, y, **kwargs)
+                res = f(x, y, **styles)
         return res

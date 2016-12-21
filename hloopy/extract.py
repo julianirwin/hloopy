@@ -34,8 +34,14 @@ class ExtractBase:
         Returns:
             Same as `matplotlib.axes.plot`
         """
-
-        ax.plot(self.xs, self.ys, label=self.label_short, **kwargs)
+        styles = {'linestyle': 'none', 
+                  'marker': 'o', 
+                  'label': self.label_short,
+                  'alpha': 0.7,
+                  'mew': 1,
+                  'ms': 8}
+        styles.update(kwargs)
+        ax.plot(self.xs, self.ys, **styles)
 
 
 def coercivity(hloop, avg_width=10):
@@ -189,7 +195,7 @@ class Saturation(ExtractBase):
                     thresh_y=thresh_y)
 
     def plot(self, ax, **kwargs):
-        defaults = dict(linestyles='dashed', label=self.label_short)
+        defaults = dict(linestyles='dashed', label=self.label_short, zorder=3)
         defaults.update(kwargs)
         return ax.hlines(y=self.ys, xmin=self.xs[0], xmax=self.xs[1], 
                          **defaults)

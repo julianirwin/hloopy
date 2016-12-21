@@ -63,6 +63,7 @@ Todo
   - Write extracts to file.
   - Extracts only plot.
   - Add targeting.
+  - pep8 everything
 
 
 

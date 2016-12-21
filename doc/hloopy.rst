@@ -20,6 +20,14 @@ hloopy.hloop module
     :undoc-members:
     :show-inheritance:
 
+hloopy.plotters module
+----------------------
+
+.. automodule:: hloopy.plotters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 hloopy.util module
 ------------------
 

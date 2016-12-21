@@ -5,7 +5,7 @@ from nose.tools import assert_equal, raises
 from os.path import join, realpath, dirname
 
 
-SHOW_PLOTS = True
+SHOW_PLOTS = False
 TESTPATH = realpath(dirname(__file__))
 
 

@@ -25,11 +25,11 @@ class ExtractBase:
 
     def plot(self, ax, **kwargs):
         """Convert the data represented in this class into a graphical
-        representation and then plot it on `ax`, a mpl.axes object.
+        representation and then plot it on :code:`ax`, a mpl.axes object.
 
         Args:
             ax (matplotlib.axes): Axes to plot extract on.
-            kwargs: Keyword parameters of `matplotlib.axes.plot`
+            kwargs: Keyword parameters of :code:`matplotlib.axes.plot`
 
         Returns:
             Same as `matplotlib.axes.plot`
@@ -46,7 +46,7 @@ class ExtractBase:
 
 def coercivity(hloop, avg_width=10):
     """Find the coercivity of an hloop, determined as the x-intercepts of
-    each (centered with `y -= y.mean()`) branch.
+    each (centered with :code:`y -= y.mean()`) branch.
 
     Args:
         hloop (hloopy.hloop): Hloop to be operated on
@@ -74,7 +74,7 @@ def coercivity(hloop, avg_width=10):
 
 class Coercivity(ExtractBase):
     """Find the coercivity of an hloop, determined as the x-intercepts of
-    each (centered with `y -= y.mean()`) branch.
+    each (centered with :code:`y -= y.mean()`) branch.
     """
 
     def __init__(self, hloop, avg_width=10):
@@ -150,10 +150,10 @@ class Saturation(ExtractBase):
     using a counting method. For both the positive and negative halves of the
     loop (in the y direction) compute a histogram. At saturation there will be
     many more points per bin than in the switching region.  Find the bin with
-    the most points pmax, and define threshold as `pthresh = thresh * pmax`.
-    The saturation is the average value of all the points in the bins with
-    height greater than `ptresh`. Pass `bins` or `thresh` when initializing 
-    this class if you wish.
+    the most points pmax, and define threshold as :code:`pthresh = thresh *
+    pmax`.  The saturation is the average value of all the points in the bins
+    with height greater than :code`ptresh`. Pass :code`bins` or :code`thresh`
+    when initializing this class if you wish.
     """
 
     def __init__(self, hloop, bins=50, thresh=0.25):

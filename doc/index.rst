@@ -65,14 +65,14 @@ APIs we all know and love.
 Custom Extracts
 ---------------
 
-The easiest way to add an extract is to subclass `hloolpy.ExtractBase`.
+The easiest way to add an extract is to subclass :code:`hloolpy.ExtractBase`.
 However, the only requirements for an extract are that it takes an
-`HLoopy.hloop` object when initialized (or called) and that the resulting
-object has a `.plot(ax, ...)` method.
+:code:`HLoopy.hloop` object when initialized (or called) and that the resulting
+object has a :code:`.plot(ax, ...)` method.
 
-Here is an example of a new extract that just finds the first point from
-the HLoop and plots a marker there. See the source for the `Extract` 
-submodule for more complex examples.
+Here is an example of a new extract that just finds the first point from the
+HLoop and plots a marker there. See the source for the `Extract` submodule for
+more complex examples.
 
 .. code-block:: python
 
@@ -94,11 +94,11 @@ submodule for more complex examples.
 Custom Data Preprocessing
 -------------------------
 
-As is, the `hloopy.HLoop` module only allows the x and y data to 
+As is, the :code:`hloopy.HLoop` module only allows the x and y data to 
 be a column taken straight from a data file. Sometimes the need
 arises to preprocess the data in some way, possibly merging 
 two or more columns from the data file. A simple subclass 
-of the `HLoop` allows arbitrary preprocessing:
+of the :code:`HLoop` allows arbitrary preprocessing:
 
 .. code-block:: python
 
@@ -112,8 +112,8 @@ of the `HLoop` allows arbitrary preprocessing:
            # Do some stuff to arr...
            return arr
 
-Modifying the y preprocessing is exactly analogous. The `HLoop._x()`
-method is what the default `x()` function calls to get the x axis data:
+Modifying the y preprocessing is exactly analogous. The :code:`HLoop._x()`
+method is what the default :code:`x()` function calls to get the x axis data:
            
 .. code-block:: python
 

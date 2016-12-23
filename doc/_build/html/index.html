@@ -178,14 +178,83 @@ APIs we all know and love.</p>
     <span class="n">e</span><span class="p">(</span><span class="n">hl</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># Use GridPlot() to plot many HLoops on a 2d-grid of axes</span>
+<span class="c1"># An arbitrary  number of extracts can be added to the plot.</span>
+<span class="kn">from</span> <span class="nn">hloopy.plotters</span> <span class="kn">import</span> <span class="n">GridPlot</span>
+<span class="n">hls</span> <span class="o">=</span> <span class="p">[</span><span class="n">HLoop</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span> <span class="k">for</span> <span class="n">fpath</span> <span class="ow">in</span> <span class="n">fpath_list</span><span class="p">]</span>
+<span class="n">gp</span> <span class="o">=</span> <span class="n">GridPlot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hls</span><span class="p">,</span> <span class="n">hideaxes</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">gp</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">Coercivity</span><span class="p">,</span> <span class="n">Remanence</span><span class="p">,</span> <span class="n">Saturation</span><span class="p">)</span>
+<span class="n">gp</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="custom-extracts">
+<h2>Custom Extracts<a class="headerlink" href="#custom-extracts" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to add an extract is to subclass <code class="code docutils literal"><span class="pre">hloolpy.ExtractBase</span></code>.
+However, the only requirements for an extract are that it takes an
+<code class="code docutils literal"><span class="pre">HLoopy.hloop</span></code> object when initialized (or called) and that the resulting
+object has a <code class="code docutils literal"><span class="pre">.plot(ax,</span> <span class="pre">...)</span></code> method.</p>
+<p>Here is an example of a new extract that just finds the first point from the
+HLoop and plots a marker there. See the source for the <cite>Extract</cite> submodule for
+more complex examples.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hloopy</span> <span class="kn">import</span> <span class="n">HLoop</span>
+<span class="kn">from</span> <span class="nn">hloopy.extract</span> <span class="kn">import</span> <span class="n">ExtractBase</span>
+
+<span class="k">class</span> <span class="nc">VanillaExtract</span><span class="p">(</span><span class="n">ExtractBase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hloop</span><span class="p">,</span> <span class="n">setting</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hloop</span> <span class="o">=</span> <span class="n">hloop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setting</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;linestyle&#39;</span><span class="p">:</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;marker&#39;</span><span class="p">:</span> <span class="s1">&#39;o&#39;</span><span class="p">}</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">xpoint</span> <span class="o">=</span> <span class="n">hloop</span><span class="o">.</span><span class="n">x</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ypoint</span> <span class="o">=</span> <span class="n">hloop</span><span class="o">.</span><span class="n">y</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xpoint</span><span class="p">,</span> <span class="n">ypoint</span><span class="p">,</span> <span class="o">**</span><span class="n">style</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="custom-data-preprocessing">
+<h2>Custom Data Preprocessing<a class="headerlink" href="#custom-data-preprocessing" title="Permalink to this headline">¶</a></h2>
+<p>As is, the <code class="code docutils literal"><span class="pre">hloopy.HLoop</span></code> module only allows the x and y data to
+be a column taken straight from a data file. Sometimes the need
+arises to preprocess the data in some way, possibly merging
+two or more columns from the data file. A simple subclass
+of the <code class="code docutils literal"><span class="pre">HLoop</span></code> allows arbitrary preprocessing:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hloopy</span> <span class="kn">import</span> <span class="n">HLoop</span>
+
+<span class="k">class</span> <span class="nc">CustomHLoop</span><span class="p">(</span><span class="n">HLoop</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_preprocessing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">custom_preprocessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">):</span>
+        <span class="c1"># Do some stuff to arr...</span>
+        <span class="k">return</span> <span class="n">arr</span>
+</pre></div>
+</div>
+<p>Modifying the y preprocessing is exactly analogous. The <code class="code docutils literal"><span class="pre">HLoop._x()</span></code>
+method is what the default <code class="code docutils literal"><span class="pre">x()</span></code> function calls to get the x axis data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HLoop</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">()</span>
+
+    <span class="c1"># (this is only a sketch of _x()...see code in hloop module)</span>
+    <span class="k">def</span> <span class="nf">_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xcol</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="storing-frequently-used-custom-classes">
+<h2>Storing Frequently Used Custom Classes<a class="headerlink" href="#storing-frequently-used-custom-classes" title="Permalink to this headline">¶</a></h2>
+<p>(Not yet implemented)</p>
 </div>
 <div class="section" id="todo">
 <h2>Todo<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>Plot many on a grid.</li>
+<li>~~Plot many on a grid.~~</li>
 <li>CLI</li>
 <li>Test custom data manipulation in hloopy.HLoop.x() and y().</li>
 <li>Stoner model module</li>
@@ -193,6 +262,7 @@ APIs we all know and love.</p>
 <li>Extracts only plot.</li>
 <li>Add targeting.</li>
 <li>pep8 everything</li>
+<li>.config class files</li>
 </ul>
 </div></blockquote>
 </div>

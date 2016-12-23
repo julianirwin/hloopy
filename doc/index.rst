@@ -144,6 +144,12 @@ Todo
   - Add targeting.
   - pep8 everything
   - .config class files
+  - Carefully avoid code that makes new copies of the columns
+    in the original DataFrame.
+  - Memoize HLoop.x(), HLoop.y(). Actually, not really memoize,
+    maybe just compute them once upon initialization. But
+    I did want to allow x()/y() to take parameters, and in that
+    case memoization would be the right thing...
 
 
 

@@ -22,7 +22,7 @@ class HLoop:
         """
         return len(self.df.columns)
 
-    def x(self):
+    def _x(self):
         """Get this HLoop's x-axis data. In a custom subclass of
         hloopy.HLoop this can be overridden to allow custom 
         transformation/manipulation of the x data. The only
@@ -34,8 +34,9 @@ class HLoop:
             return self.df.ix[:, xcol]
         except (AttributeError, ValueError):
             return self.df.ix[:, 0]
+    x = _x
 
-    def y(self):
+    def _y(self):
         """Get this HLoop's y-axis data. In a custom subclass of
         hloopy.HLoop this can be overridden to allow custom 
         transformation/manipulation of the y data. The only
@@ -47,6 +48,7 @@ class HLoop:
             return self.df.ix[:, ycol]
         except (AttributeError, ValueError):
             return self.df.ix[:, 1]
+    y = _y
 
     def setas(self, *args, **kwargs):
         """Mark which columns should be respectively set as the 
@@ -103,9 +105,7 @@ class HLoop:
         styles = {'color': 'darkslategrey'}
         styles.update(kwargs)
         try:
-            x = self.df.ix[:, self.xcol]
-            y = self.df.ix[:, self.ycol]
-            res = f(x, y, **kwargs)
+            res = f(self.x(), self.y(), **kwargs)
         except (AttributeError, ValueError):
             x = self.df.ix[:, 0]
             if self.num_cols() == 1:

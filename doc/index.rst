@@ -52,6 +52,85 @@ APIs we all know and love.
    plt.show()
    plt.close()
 
+   # Use GridPlot() to plot many HLoops on a 2d-grid of axes
+   # An arbitrary  number of extracts can be added to the plot.
+   from hloopy.plotters import GridPlot
+   hls = [HLoop(fpath) for fpath in fpath_list]
+   gp = GridPlot(self.hls, hideaxes=True, legend=True)
+   gp.extract(Coercivity, Remanence, Saturation)
+   gp.plot()
+   plt.close()
+
+
+Custom Extracts
+---------------
+
+The easiest way to add an extract is to subclass `hloolpy.ExtractBase`.
+However, the only requirements for an extract are that it takes an
+`HLoopy.hloop` object when initialized (or called) and that the resulting
+object has a `.plot(ax, ...)` method.
+
+Here is an example of a new extract that just finds the first point from
+the HLoop and plots a marker there. See the source for the `Extract` 
+submodule for more complex examples.
+
+.. code-block:: python
+
+   from hloopy import HLoop
+   from hloopy.extract import ExtractBase
+
+   class VanillaExtract(ExtractBase):
+       def __init__(self, hloop, setting=10):
+           self.hloop = hloop
+           self.setting = 10
+       
+       def plot(self, ax, **kwargs):
+           style = {'linestyle': 'none', 'marker': 'o'}
+           style.update(kwargs)
+           xpoint = hloop.x()[0]
+           ypoint = hloop.y()[0]
+           ax.plot(xpoint, ypoint, **style)
+
+Custom Data Preprocessing
+-------------------------
+
+As is, the `hloopy.HLoop` module only allows the x and y data to 
+be a column taken straight from a data file. Sometimes the need
+arises to preprocess the data in some way, possibly merging 
+two or more columns from the data file. A simple subclass 
+of the `HLoop` allows arbitrary preprocessing:
+
+.. code-block:: python
+
+   from hloopy import HLoop
+
+   class CustomHLoop(HLoop):
+       def x(self):
+           return self.custom_preprocessing(self._x())
+       
+       def custom_preprocessing(self, arr):
+           # Do some stuff to arr...
+           return arr
+
+Modifying the y preprocessing is exactly analogous. The `HLoop._x()`
+method is what the default `x()` function calls to get the x axis data:
+           
+.. code-block:: python
+
+   class HLoop:
+       def x(self):
+           return self._x()
+       
+       # (this is only a sketch of _x()...see code in hloop module)
+       def _x(self):
+           return self.df.ix[:, self.xcol]
+
+
+Storing Frequently Used Custom Classes
+--------------------------------------
+
+(Not yet implemented)
+
 
 Todo
 ----

@@ -56,7 +56,7 @@ APIs we all know and love.
 Todo
 ----
 
-  - Plot many on a grid.
+  - ~~Plot many on a grid.~~
   - CLI
   - Test custom data manipulation in hloopy.HLoop.x() and y().
   - Stoner model module
@@ -64,6 +64,7 @@ Todo
   - Extracts only plot.
   - Add targeting.
   - pep8 everything
+  - .config class files
 
 
 

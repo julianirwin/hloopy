@@ -1,3 +1,5 @@
+import numpy as np
+
 def crop(arr, numcycles, precrop=0, postcrop=0):
     """Crop out some initial and final cycles in data that contains
     several cycles.

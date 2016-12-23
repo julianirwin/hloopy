@@ -135,9 +135,7 @@ Storing Frequently Used Custom Classes
 Todo
 ----
 
-  - ~~Plot many on a grid.~~
   - CLI
-  - Test custom data manipulation in hloopy.HLoop.x() and y().
   - Stoner model module
   - Write extracts to file.
   - Extracts only plot.

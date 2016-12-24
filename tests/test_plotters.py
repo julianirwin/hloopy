@@ -61,3 +61,9 @@ class TestGridPlot:
         gp.extract(Coercivity, Remanence, Saturation)
         gp.plot()
         if SHOW_PLOTS: plt.show()
+
+    def test_plot_titles(self):
+        self.run_plot(self.hls[:1], lablevel=None)
+        self.run_plot(self.hls[:1], lablevel=0)
+        self.run_plot(self.hls[:1], lablevel=1)
+        self.run_plot(self.hls, lablevel=0)

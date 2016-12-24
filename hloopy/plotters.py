@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from os.path import split
 
 
 class GridPlot:
-    def __init__(self, hloops, hideaxes=True, legend=True):
+    def __init__(self, hloops, hideaxes=True, legend=True, lablevel=None,
+                 titleparams={}):
         """Make a new gridplot.
 
         Args:
@@ -12,6 +14,11 @@ class GridPlot:
                     a legend is put in one axes. If a dict is passed, the
                     legend is shown and the dict is passed to `ax.legend()`
                     as its kwargs.
+            lablevel (int): Determines how each axis is labeled. Default
+                            is no label. Value of 0 means label with the
+                            datafile basename, 1 means datafile dirname,
+                            2 means grandparent and so on.
+            titleparams (dict): Optional kwargs for :code:`ax.set_title()`
         """
         if hloops is None or len(hloops) == 0:
             raise ValueError("Must have at least 1 hloop to make a GridPlot.")
@@ -22,6 +29,8 @@ class GridPlot:
         if hideaxes:
             self.hideaxes(self.axarr)
         self.extracts = []
+        self.lablevel = lablevel
+        self.titleparams = titleparams
 
     def plot(self, **kwargs):
         """Plot all of `self.hloops` onto a 2d array of `matploblib.axes`.
@@ -40,6 +49,11 @@ class GridPlot:
             #                                    self.mx, x, y)
             # ax = axarr[i_ax, j_ax]
             ax = self.axarr[x][y]
+            if self.lablevel is not None:
+                title_style = {'fontsize': 12}
+                title_style.update(self.titleparams)
+                ax.set_title(self._title_from(hl.fpath, level=self.lablevel),
+                             **title_style)
             ln = hl.plot(ax)
             self.lines_plotted[x][y] = ln
             for e in self.extracts:
@@ -83,6 +97,13 @@ class GridPlot:
                 curr.spines["bottom"].set_visible(False)
                 curr.xaxis.set_visible(False)
                 curr.yaxis.set_visible(False)
+
+    def _title_from(self, fpath, level):
+        dir, base = split(fpath)
+        if level == 0:
+            return base
+        else:
+            return self._title_from(dir, level - 1)
 
     # @staticmethod
     # def get_axarr_coords(origin, xplus, yplus, N, i, j):

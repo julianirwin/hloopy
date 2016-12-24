@@ -135,6 +135,7 @@ Storing Frequently Used Custom Classes
 Todo
 ----
 
+  - GridPlot Labels
   - CLI
   - Stoner model module
   - Write extracts to file.

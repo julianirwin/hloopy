@@ -149,6 +149,7 @@ Todo
     maybe just compute them once upon initialization. But
     I did want to allow x()/y() to take parameters, and in that
     case memoization would be the right thing...
+  - Gridplot NESW rotation of grid
 
 
 

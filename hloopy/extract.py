@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+from os.path import split
 
 class ExtractBase:
     """Container for parameters extracted from a hysteresis loop.
@@ -199,4 +201,64 @@ class Saturation(ExtractBase):
         defaults.update(kwargs)
         return ax.hlines(y=self.ys, xmin=self.xs[0], xmax=self.xs[1], 
                          **defaults)
-        
+
+class ExtractWriter:
+    """
+
+    The extracts given to the writer must have:
+        - hloop attribute 
+          - Also, extracts are grouped by the datafiles they came from not the
+            actual HLoop instances.
+        - label
+        - avg_val
+    And they may also optionally have:
+        - std_val
+    """
+    def __init__(self, titlelevel=0):
+        self.titlelevel = titlelevel
+        self.d = {}
+
+    def add(self, extract):
+        key = extract.hloop.fpath 
+        current = self.d.get(key, [])
+        current.append(extract)
+        self.d[key] = current
+
+    def to_csv(self, savefile, row_index_label='File', **kwargs):
+        """Wrapper of pandas.to_csv."""
+        defaults = {'sep': '\t'}
+        defaults.update(kwargs)
+        df = self._parse_d_to_df(row_index_label)
+        return df.to_csv(path_or_buf=savefile, **defaults)
+    
+    def to_string(self,row_index_label='File'):
+        df = self._parse_d_to_df(row_index_label)
+        return df.to_string()
+
+    def _parse_d_to_df(self, row_index_label='File'):
+        # get a list of sorted unique extracts (using their label attributes)
+        labels = sorted(set([e.label for es in self.d.values() for e in es]))
+        titles, rows = [], []
+        for path, extracts in self.d.items():
+            titles.append(self._title_from(path, self.titlelevel))
+            row = [float('nan') for i in labels]
+            for e in extracts:
+                i = labels.index(e.label)
+                row[i] = e.avg_val
+            rows.append(row)
+        data = np.array(rows)
+        df_d = {l: data[:,i] for i, l in enumerate(labels)}
+        df_d[row_index_label] = titles
+        df = pd.DataFrame(data=df_d)
+        df.set_index(row_index_label, inplace=True)
+        return df
+
+    def _title_from(self, fpath, level):
+        dir, base = split(fpath)
+        if level == 0:
+            return base
+        else:
+            return self._title_from(dir, level - 1)
+
+
+

@@ -1,9 +1,11 @@
 from hloopy import HLoop
-from hloopy.extract import (coercivity, Coercivity, Remanence, Saturation)
+from hloopy.extract import (coercivity, Coercivity, Remanence, Saturation,
+                            ExtractWriter)
 from nose.tools import assert_equal, assert_less
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+from shutil import rmtree
 
 SHOW_PLOTS = False
 
@@ -50,3 +52,32 @@ class TestExtractPdn0:
         sat_extract = Saturation(self.hl)
         sat_extract.plot(self.ax, alpha=0.7, zorder=10)
         if SHOW_PLOTS: plt.show()
+
+
+class TestExtractWriter:
+    @classmethod
+    def setup(cls):
+        fname = '0deg_400G_down_0'
+        fpath = os.path.join(testpath, 'data', 'poleup_poledown', fname)
+        cls.hl = HLoop(fpath, sep='\t', skiprows=5)
+        cls.writer = ExtractWriter()
+        cls.hl.setas('x.y')
+        try:
+            os.mkdir(os.path.join(testpath, 'save'))
+        except FileExistsError:
+            pass
+        cls.savepath = os.path.join(testpath, 'save', fname + '.txt')
+
+    @classmethod
+    def teardown(cls):
+        rmtree(os.path.join(testpath, 'save'))
+        
+
+    def test_write_single_hl(self):
+        mr_extract = Remanence(self.hl)
+        sat_extract = Saturation(self.hl)
+        writer = ExtractWriter()
+        writer.add(mr_extract)
+        writer.add(sat_extract)
+        writer.to_csv(self.savepath)
+

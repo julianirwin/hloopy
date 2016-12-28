@@ -28,6 +28,14 @@ hloopy.plotters module
     :undoc-members:
     :show-inheritance:
 
+hloopy.preprocess module
+------------------------
+
+.. automodule:: hloopy.preprocess
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 hloopy.util module
 ------------------
 

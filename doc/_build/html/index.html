@@ -141,6 +141,7 @@ hysteresis loop data.</p>
 <li class="toctree-l2"><a class="reference internal" href="hloopy.html#module-hloopy.extract">hloopy.extract module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hloopy.html#module-hloopy.hloop">hloopy.hloop module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hloopy.html#module-hloopy.plotters">hloopy.plotters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hloopy.html#module-hloopy.preprocess">hloopy.preprocess module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hloopy.html#module-hloopy.util">hloopy.util module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hloopy.html#module-hloopy">Module contents</a></li>
 </ul>
@@ -254,15 +255,26 @@ method is what the default <code class="code docutils literal"><span class="pre"
 <h2>Todo<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>~~Plot many on a grid.~~</li>
-<li>CLI</li>
-<li>Test custom data manipulation in hloopy.HLoop.x() and y().</li>
-<li>Stoner model module</li>
-<li>Write extracts to file.</li>
-<li>Extracts only plot.</li>
-<li>Add targeting.</li>
+<li>CLI
+- Copy mostly from sMOKE.py</li>
+<li>Stoner model module
+- Have this code in modelplotlib</li>
+<li>Write extracts to file.
+- Shorthand for mapping a bunch of extracts to a bunch of files
+- Writter, but needs more vetting.</li>
+<li>Extracts only plot.
+- Should take the output of a writer as it&#8217;s input</li>
 <li>pep8 everything</li>
 <li>.config class files</li>
+<li>Carefully avoid code that makes new copies of the columns
+in the original DataFrame.</li>
+<li>Memoize HLoop.x(), HLoop.y(). Actually, not really memoize,
+maybe just compute them once upon initialization. But
+I did want to allow x()/y() to take parameters, and in that
+case memoization would be the right thing...</li>
+<li>Gridplot NESW rotation of grid
+- Copy mostly from sMOKE</li>
+<li>Fix Remanence extract. It&#8217;s NaNing on the SOT data.</li>
 </ul>
 </div></blockquote>
 </div>

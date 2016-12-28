@@ -203,9 +203,7 @@ class Saturation(ExtractBase):
                          **defaults)
 
 class ExtractWriter:
-    """
-
-    The extracts given to the writer must have:
+    """ The extracts given to the writer must have:
         - hloop attribute 
           - Also, extracts are grouped by the datafiles they came from not the
             actual HLoop instances.

@@ -135,12 +135,15 @@ Storing Frequently Used Custom Classes
 Todo
 ----
 
-  - GridPlot Custom Label functions
   - CLI
+    - Copy mostly from sMOKE.py
   - Stoner model module
+    - Have this code in modelplotlib
   - Write extracts to file.
+    - Shorthand for mapping a bunch of extracts to a bunch of files
+    - Writter, but needs more vetting.
   - Extracts only plot.
-  - Add targeting.
+    - Should take the output of a writer as it's input
   - pep8 everything
   - .config class files
   - Carefully avoid code that makes new copies of the columns
@@ -150,6 +153,8 @@ Todo
     I did want to allow x()/y() to take parameters, and in that
     case memoization would be the right thing...
   - Gridplot NESW rotation of grid
+    - Copy mostly from sMOKE
+  - Fix Remanence extract. It's NaNing on the SOT data.
 
 
 

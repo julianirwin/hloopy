@@ -33,6 +33,13 @@ class TestGridPlot:
     def check_grid_xy(self, ni, xi):
         res = GridPlot.get_grid_xy(range(ni))[0]
         assert_equal(res, xi)
+
+    def test_title_from(self):
+        gp = GridPlot(self.hls[:1])
+        title = gp._title_from('/dir/1_y=142um_I=5mA_Vpp=3.0V', level=0,
+                               maxchars=20, ellipsis=True)
+        correct = r'1_y=142um_I=5mA_Vpp=$\ldots$'
+        assert_equal(title, correct)
         
     @raises(ValueError)
     def test_plot_zero(self):

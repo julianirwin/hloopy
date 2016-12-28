@@ -4,22 +4,22 @@ from os.path import split
 
 
 class GridPlot:
+    """Plot a 2d grid of HLoops.
+
+    Args:
+        hloops (sequence): hloopy.HLoops to include in the grid plot.
+        legend: If `None` or `False` then no legend. If `True` then 
+                a legend is put in one axes. If a dict is passed, the
+                legend is shown and the dict is passed to `ax.legend()`
+                as its kwargs.
+        lablevel (int): Determines how each axis is labeled. Default
+                        is no label. Value of 0 means label with the
+                        datafile basename, 1 means datafile dirname,
+                        2 means grandparent and so on.
+        titleparams (dict): Optional kwargs for :code:`ax.set_title()`
+    """
     def __init__(self, hloops, hideaxes=True, legend=True, lablevel=None,
                  titleparams={}):
-        """Make a new gridplot.
-
-        Args:
-            hloops (sequence): hloopy.HLoops to include in the grid plot.
-            legend: If `None` or `False` then no legend. If `True` then 
-                    a legend is put in one axes. If a dict is passed, the
-                    legend is shown and the dict is passed to `ax.legend()`
-                    as its kwargs.
-            lablevel (int): Determines how each axis is labeled. Default
-                            is no label. Value of 0 means label with the
-                            datafile basename, 1 means datafile dirname,
-                            2 means grandparent and so on.
-            titleparams (dict): Optional kwargs for :code:`ax.set_title()`
-        """
         if hloops is None or len(hloops) == 0:
             raise ValueError("Must have at least 1 hloop to make a GridPlot.")
         self.hloops = hloops
@@ -52,8 +52,9 @@ class GridPlot:
             if self.lablevel is not None:
                 title_style = {'fontsize': 12}
                 title_style.update(self.titleparams)
-                ax.set_title(self._title_from(hl.fpath, level=self.lablevel),
-                             **title_style)
+                title = self._title_from(hl.fpath, level=self.lablevel,
+                                         maxchars=20, ellipsis=True)
+                ax.set_title(title, **title_style)
             ln = hl.plot(ax)
             self.lines_plotted[x][y] = ln
             for e in self.extracts:
@@ -98,12 +99,24 @@ class GridPlot:
                 curr.xaxis.set_visible(False)
                 curr.yaxis.set_visible(False)
 
-    def _title_from(self, fpath, level):
+    def _title_from(self, fpath, level, maxchars=None, ellipsis=False):
         dir, base = split(fpath)
         if level == 0:
-            return base
+            title = base
         else:
-            return self._title_from(dir, level - 1)
+            title = self._title_from(dir, level - 1) 
+        if maxchars is not None and len(title) > maxchars:
+            title = title[:maxchars] 
+            if ellipsis:
+                title += r'$\ldots$' 
+        return title
+    
+    # def _truncate_title(self, title, maxchars=None, ellipsis=False):
+    #     if maxchars is not None and len(title) > maxchars:
+    #         title = title[:maxchars] 
+    #         if ellipsis:
+    #             title += r'$\ldots$' 
+
 
     # @staticmethod
     # def get_axarr_coords(origin, xplus, yplus, N, i, j):

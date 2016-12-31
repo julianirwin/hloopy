@@ -22,7 +22,8 @@ setup(name='hloopy',
           'test': ['nose'],
       },
       test_suite = 'nose.collector',
-      # entry_points = {
-      #     'console_scripts': ['bpl4_quickplot=batchplotlib4.bpl4_quickplot:main'],
-      #     }
+      entry_points = {
+          # 'console_scripts': ['bpl4_quickplot=batchplotlib4.bpl4_quickplot:main'],
+          'console_scripts': ['hloopy=hloopy.cli:main'],
+          }
       )

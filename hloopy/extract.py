@@ -233,6 +233,10 @@ class ExtractWriter:
         df = self._parse_d_to_df(row_index_label)
         return df.to_string()
 
+    def to_df(self,row_index_label='File'):
+        df = self._parse_d_to_df(row_index_label)
+        return df
+
     def _parse_d_to_df(self, row_index_label='File'):
         # get a list of sorted unique extracts (using their label attributes)
         labels = sorted(set([e.label for es in self.d.values() for e in es]))
@@ -257,6 +261,9 @@ class ExtractWriter:
             return base
         else:
             return self._title_from(dir, level - 1)
+
+    def __str__(self):
+        return self.to_string()
 
 
 

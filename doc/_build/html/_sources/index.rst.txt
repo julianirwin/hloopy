@@ -155,6 +155,7 @@ Todo
   - Gridplot NESW rotation of grid
     - Copy mostly from sMOKE
   - Fix Remanence extract. It's NaNing on the SOT data.
+  - ExtractWRiter docstring
 
 
 

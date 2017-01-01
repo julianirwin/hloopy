@@ -1,0 +1,77 @@
+<Cluster>
+<Name>MOKE Measurement Parameters</Name>
+<NumElts>17</NumElts>
+<DBL>
+<Name>Channel 2 
+(Signal) Range</Name>
+<Val>8.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Channel 1 (B-field) 
+Range (1V = 100G)</Name>
+<Val>8.00000000000000</Val>
+</DBL>
+<U16>
+<Name>Averages</Name>
+<Val>8</Val>
+</U16>
+<DBL>
+<Name>Sample Rate (2E7)</Name>
+<Val>10000.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Period (s)</Name>
+<Val>1.00000000000000</Val>
+</DBL>
+<Refnum>
+<Name>Digitizer VISA</Name>
+<RefKind>VISA</RefKind>
+<Val>TCPIP::10.128.226.158::INSTR</Val>
+</Refnum>
+<I32>
+<Name>FG Address</Name>
+<Val>10</Val>
+</I32>
+<DBL>
+<Name>Preamp Gain</Name>
+<Val>10.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>B_center 
+per I (G/A)</Name>
+<Val>169.90000000000001</Val>
+</DBL>
+<DBL>
+<Name>I per Vctl (A/V)</Name>
+<Val>4.32000000000000</Val>
+</DBL>
+<DBL>
+<Name>B_center per
+ B_pole</Name>
+<Val>0.72800000000000</Val>
+</DBL>
+<DBL>
+<Name>Max Field (G)</Name>
+<Val>350.00000000000000</Val>
+</DBL>
+<DBL>
+<Name>Gauss per Volt</Name>
+<Val>1000.00000000000000</Val>
+</DBL>
+<I32>
+<Name>Rows</Name>
+<Val>7</Val>
+</I32>
+<I32>
+<Name>Cols</Name>
+<Val>7</Val>
+</I32>
+<DBL>
+<Name>Pixel Size (um)</Name>
+<Val>10.00000000000000</Val>
+</DBL>
+<I32>
+<Name>Num Scans</Name>
+<Val>1</Val>
+</I32>
+</Cluster>

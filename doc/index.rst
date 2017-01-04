@@ -136,12 +136,11 @@ Todo
 ----
 
   - CLI
-    - Copy mostly from sMOKE.py
+    - arb function
   - Stoner model module
     - Have this code in modelplotlib
   - Write extracts to file.
     - Shorthand for mapping a bunch of extracts to a bunch of files
-    - Writter, but needs more vetting.
   - Extracts only plot.
     - Should take the output of a writer as it's input
   - pep8 everything
@@ -156,6 +155,8 @@ Todo
     - Copy mostly from sMOKE
   - Fix Remanence extract. It's NaNing on the SOT data.
   - ExtractWRiter docstring
+  - test on single column data
+  - custom title functions for gridplot
 
 
 

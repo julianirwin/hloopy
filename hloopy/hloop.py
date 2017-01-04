@@ -68,7 +68,7 @@ class HLoop:
 
         """
         # Do nothing if no args are passed.
-        if len(args) == 0:
+        if len(args) == 0 or args[0] is None:
             return
         # If first arg is a string, treat that as the column specifier
         elif len(args) == 1 and isinstance(args[0], str):

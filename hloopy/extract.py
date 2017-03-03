@@ -64,7 +64,7 @@ def coercivity(hloop, avg_width=10):
     hc_indices = list(np.argmin(np.abs(y)) for y in (ych0, ych1))
     hc_indices[1] += N//2
     Hc_avgs = tuple(x[i - avg_width:i + avg_width].mean() for i in hc_indices)
-    Hc = abs(Hc_avgs[1] - Hc_avgs[0])
+    Hc = abs(Hc_avgs[1] - Hc_avgs[0])/2.0
     hc_indices = np.array(hc_indices)
     return ExtractBase(label='coercivity',
                        label_short='Hc',
@@ -91,7 +91,7 @@ class Coercivity(ExtractBase):
         hc_indices = list(np.argmin(np.abs(y)) for y in (ych0, ych1))
         hc_indices[1] += N//2
         Hc_avgs = [x[i - avg_width:i + avg_width].mean() for i in hc_indices]
-        Hc = abs(Hc_avgs[1] - Hc_avgs[0])
+        Hc = abs(Hc_avgs[1] - Hc_avgs[0])/2.0
         hc_indices = np.array(hc_indices)
 
         self.avg_val = Hc

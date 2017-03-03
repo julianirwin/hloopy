@@ -41,8 +41,10 @@ class GridPlot:
         Returns:
             
         """
-        indices = range(self.mx)
-        self.lines_plotted = [[None for x in indices] for y in indices]
+        self.lines_plotted = self._empty_2darr(self.mx)
+#        elabs = [e.label for e in self.extracts]
+#        self.extract_vals = {k: [] for k in elabs}
+        self.extract_instances = []
         for q, hl in enumerate(self.hloops):
             x, y = q // self.mx, q % self.mx
             # i_ax, j_ax = self.get_axarr_coords(origin, xplus, yplus, 
@@ -58,7 +60,10 @@ class GridPlot:
             ln = hl.plot(ax)
             self.lines_plotted[x][y] = ln
             for e in self.extracts:
-                e(hl).plot(ax, **kwargs)    
+                e_instance = e(hl)
+                e_instance.plot(ax, **kwargs)
+                self.extract_instances.append(e_instance)
+#                self.extracts_plotted[e.label].append(e.avg_value)
             if q == 0 and self.legend:
                 try:
                     ax.legend(**self.legend)
@@ -110,6 +115,11 @@ class GridPlot:
             if ellipsis:
                 title += r'$\ldots$' 
         return title
+    
+    def _empty_2darr(self, m, n=None):
+        if n is None:
+            n = m
+        return [[None for x in range(n)] for y in range(m)]
     
     # def _truncate_title(self, title, maxchars=None, ellipsis=False):
     #     if maxchars is not None and len(title) > maxchars:

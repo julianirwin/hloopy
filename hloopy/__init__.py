@@ -1,7 +1,7 @@
 from . import extract
 from . import util
 from . import plotters
-from hloopy.hloop import HLoop
+from hloopy.hloop import HLoop, HLoopGrid
 import os
 from os import path as _path
 import sys

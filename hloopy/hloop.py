@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import re
 from hloopy.util import rightpad
 
 
@@ -7,9 +8,14 @@ class HLoop:
     """An hloopy.HLoop represents a single hysteresis loop. It has
     both x and y datasets.
     """
-    def __init__(self, fpath, read_func=pd.read_csv, **kwargs):
+    def __init__(self, fpath, read_func=pd.read_csv, setas=None, **kwargs):
         self.fpath = fpath
         self._read_data(f=read_func, **kwargs)
+        if setas is not None:
+            if isinstance(setas, str):
+                self.setas(setas)
+            elif isinstance(setas, dict):
+                self.setas(**setas)
 
     def _read_data(self, f, **kwargs):
         self.df = pd.read_csv(self.fpath, **kwargs)
@@ -125,22 +131,38 @@ class HLoopGrid:
             to a (row, column). If left as `None` the default behavior
             is to create a square or nearly square grid and to assign
             hloops to locations on the grid sequentially.
+        xy_patterns: If no mapping func is provided an xy_pattern can be 
+            given instead. This must be a tuple like (xpattern, ypattern)
+            where the patterns are regex that finds the x and y coords
+            from somewhere in the HLoop.fpath string. The regex match
+            must contain one group: the coordinate. For example 'x=(\d+)'
+            the group is defined by the parens surrounding the \d. An 
+            acceptable xy_patterns arg would be ('x=(\d)', 'y=(\d)').
     """
-    def __init__(self, hloops, mapping_func=None):
+    def __init__(self, hloops, mapping_func=None, xy_patterns=None):
         self._verify_hloops(hloops)
         self.hloops = hloops
         self.nloops = len(hloops)
         if mapping_func is None:
-            self.shape = self._pick_shape(self.nloops)
-            self.nrows = self.shape[0]
-            self.ncols = self.shape[1]
-            # mapping[ith hloop of sequence] = (row, col) in grid to be placed
-            self.mapping = [divmod(i, self.ncols) for i in range(self.nloops)]
+            if xy_patterns is None:
+                self.shape = self._pick_shape(self.nloops)
+                self.nrows = self.shape[0]
+                self.ncols = self.shape[1]
+                # mapping[ith hloop of sequence] = (row, col) in grid to be placed
+                self.mapping = [divmod(i, self.ncols) 
+                                for i in range(self.nloops)]
+            else:
+                mapping_func = self._glean_xy_func(*xy_patterns) 
+                self._assert_mapping_func_valid(mapping_func, hloops[0])
+                self.mapping = [mapping_func(hl) for hl in hloops]
+                self.nrows = max([x[0] for x in self.mapping]) + 1
+                self.ncols = max([x[1] for x in self.mapping]) + 1
+                self.shape = (self.nrows, self.ncols)
         else:
             self._assert_mapping_func_valid(mapping_func, hloops[0])
             self.mapping = [mapping_func(hl) for hl in hloops]
-            self.nrows = max([x[0] for x in mapping])
-            self.ncols = max([x[1] for x in mapping])
+            self.nrows = max([x[0] for x in self.mapping]) + 1
+            self.ncols = max([x[1] for x in self.mapping]) + 1
             self.shape = (self.nrows, self.ncols)
 
     def _pick_shape(self, N):
@@ -171,4 +193,11 @@ class HLoopGrid:
             msg = "'mapping_func' sequence output contains non ints"
             raise ValueError(msg)
 
+    def _glean_xy(self, fpath, xpat, ypat):
+        ix = int(re.search(xpat, fpath).groups()[0])
+        iy = int(re.search(ypat, fpath).groups()[0])
+        return (ix, iy)
+    
+    def _glean_xy_func(self, xpat, ypat):
+        return lambda x: self._glean_xy(x.fpath, xpat, ypat)
 

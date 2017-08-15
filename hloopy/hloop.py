@@ -114,3 +114,61 @@ class HLoop:
                 y = self.df.ix[:, 1]
                 res = f(x, y, **styles)
         return res
+
+
+class HLoopGrid:
+    """A 2d grid of HLoops.
+
+    Args:
+        hloops (sequence): A sequence of hloopy.HLoop object
+        mapping_func (callable): A function that maps an HLoop object
+            to a (row, column). If left as `None` the default behavior
+            is to create a square or nearly square grid and to assign
+            hloops to locations on the grid sequentially.
+    """
+    def __init__(self, hloops, mapping_func=None):
+        self._verify_hloops(hloops)
+        self.hloops = hloops
+        self.nloops = len(hloops)
+        if mapping_func is None:
+            self.shape = self._pick_shape(self.nloops)
+            self.nrows = self.shape[0]
+            self.ncols = self.shape[1]
+            # mapping[ith hloop of sequence] = (row, col) in grid to be placed
+            self.mapping = [divmod(i, self.ncols) for i in range(self.nloops)]
+        else:
+            self._assert_mapping_func_valid(mapping_func, hloops[0])
+            self.mapping = [mapping_func(hl) for hl in hloops]
+            self.nrows = max([x[0] for x in mapping])
+            self.ncols = max([x[1] for x in mapping])
+            self.shape = (self.nrows, self.ncols)
+
+    def _pick_shape(self, N):
+        """Pick a good grid shape for N HLoops."""
+        ncols = int(np.ceil(np.sqrt(N)))
+        nrows = int(np.ceil(N / ncols))
+        return nrows, ncols
+    
+    def _verify_hloops(self, hloops):
+        if hloops is None:
+            raise ValueError("Parameter 'hloops' cannot be None")
+        if len(hloops) == 0:
+            msg = "Parameter 'hloops' must be a sequence of len > 0"
+            raise ValueError(msg)
+        for hl in hloops:
+            if not isinstance(hl, HLoop):
+                msg = "'hloops' arg has 1 or more elements that are not hloops"
+                raise(ValueError(msg))
+
+    def _assert_mapping_func_valid(self, func, hloop):
+        """Assert that mapping_func takes an hloop and returns a (row, col)
+        sequence.
+        """
+        output = func(hloop)
+        if not len(output) == 2:
+            raise ValueError("'mapping_func' not outputting length 2 sequence")
+        if not isinstance(output[0], int) and isinstance(output[1], int):
+            msg = "'mapping_func' sequence output contains non ints"
+            raise ValueError(msg)
+
+

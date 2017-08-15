@@ -121,9 +121,15 @@ class Remanence(ExtractBase):
     @staticmethod
     def remanence(x, y, avg_width):
         N = len(x)
+        # Force array len to be a multiple of 4. There are usually
+        # thousands of points in a MOKE measurement, cutting the last 3 
+        # (worst case) will not have a significant effect on the result.
+        N -= (N % 4)
+        x = x[:N]
+        y = y[:N]
         # Divide into 4 quarters
         #    import pdb; pdb.set_trace()
-        inds = np.arange(N).reshape(4, N//4) - 1
+        inds = np.arange(N).reshape(4, N//4)
         yq03 = y[inds[[0, 3]]].reshape(N//2)  # yq03 = y quarters 0 and 3
         xq03 = x[inds[[0, 3]]].reshape(N//2)
         yq12 = y[inds[[1, 2]]].reshape(N//2)

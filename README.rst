@@ -56,6 +56,46 @@ APIs we all know and love.
    gp.plot()
    plt.close()
 
+   # Alternatively use an HLoopGrid and HLoopGridPlot, ExtractGridPlot
+   # This method provides some extra ways to decide what goes where
+   # on the grid. First the basic method, equivalent to GridPlot:
+   from hloopy import HLoopGrid
+   from hloopy.plotters import HLoopGridPlot, ExtractGridPlot
+   hlg = HLoopGrid(hls)
+
+   # But you can also map HLoops to positions on a grid by providing
+   # a function f(HLoop) --> (xcoord, ycoord) which is (col, row).
+   def f(hl):
+       """Find x and y coords of an HLoop by looking at
+       the datafile name for ...x=2_y=4...
+       """
+       ix = int(re.search('x=(\d+)', hl.fpath).groups()[0])
+       iy = int(re.search('y=(\d+)', hl.fpath).groups()[0])
+       return ix, iy
+   hlg = HLoopGrid(hls, mapping_func=f)
+
+   # Since re.search on the datafile name is a common way to get
+   # at an HLoop's coordinates, a shortcut is provided. By passing
+   # `xy_patterns` a (x_pattern, y_pattern) regex tuple, the 
+   # x and y coords will automatically be found using re.search as
+   # in the above example. The custom function option can still be
+   # used for more complicated schemes (like when the coords are 
+   # stored in some metadata line inside the datafiles, for example)
+   hlg = HLoopGrid(hls, xy_patterns('x=(\d+)', 'y=(\d+)'))
+
+   # Now that the grid object has been created there are several
+   # classes provided to plot the data as a grid of HLoops or as 
+   # a heat map where colors are mapped to extract values
+   hlgp = HLoopGridPlot(hlg)
+   hlgp.extract(Coercivity)
+   hlgp.plot()
+   plt.show()
+
+   # This will plot a heat map of an extracted parameter
+   egp = ExtractGridPlot(hlg, Coercivity)
+   egp.plot(colorbar=True, clim=(0, 240))
+   plt.show()
+
 
 Custom Extracts
 ---------------

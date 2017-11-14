@@ -3,6 +3,7 @@ from matplotlib.colors import Normalize
 import numpy as np
 from numpy import rot90
 from os.path import split
+from collections import defaultdict
 
 
 class GridPlotBase: 
@@ -136,7 +137,7 @@ class GridPlot(GridPlotBase):
             
         """
         self.lines_plotted = self._empty_2darr(self.mx)
-        self.extract_instances = []
+        self.extract_instances = defaultdict(list)
         for q, hl in enumerate(self.hloops):
             x, y = q // self.mx, q % self.mx
             ax = self.axarr[x][y]
@@ -151,7 +152,7 @@ class GridPlot(GridPlotBase):
             for e in self.extracts:
                 e_instance = e(hl)
                 e_instance.plot(ax, **kwargs)
-                self.extract_instances.append(e_instance)
+                self.extract_instances[hl.fpath].append(e_instance)
             if q == 0 and self.legend:
                 try:
                     ax.legend(**self.legend)
@@ -203,7 +204,7 @@ class HLoopGridPlot(GridPlotBase):
                                             ncols=final_ncols)
         if self.hideaxes_switch:
             self.hideaxes(self.axarr)
-        self.extract_instances = []
+        self.extract_instances = defaultdict(list)
         self.plotted_lines = []
         for i, hl in enumerate(self.hloops):
             # Plot hloop
@@ -226,7 +227,7 @@ class HLoopGridPlot(GridPlotBase):
             for e in self.extracts:
                 e_instance = e(hl)
                 e_instance.plot(ax, **extract_plot_kwargs)
-                self.extract_instances.append(e_instance)
+                self.extract_isntances[hl.fpath].append(e_instance)
             # Maybe add a legend
             if i == 0 and self.legend:
                 try:

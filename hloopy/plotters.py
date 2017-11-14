@@ -160,6 +160,27 @@ class GridPlot(GridPlotBase):
                     ax.legend()
         return self.lines_plotted
 
+    def extracts_as_df(self):
+        """After plotting, get all extracts in a dataframe with rows like:
+
+        "/Path/to/hloop/data, label, avg_val, xcoords, ycoords, indices"
+
+        If you want the actual extracts just grab them from 
+        GridPlot.extract_instances, which is a dict keyed by fpaths and with
+        lists of extacts as values.
+        """
+        from pandas import DataFrame
+        d = defaultdict(list)
+        for fpath, extracts in self.extract_instances.items():
+            for e in extracts:
+                d['fpath'].append(fpath)
+                d['label'].append(e.label)
+                d['avg_val'].append(e.avg_val)
+                d['xcoords'].append(e.xcoords)
+                d['ycoords'].append(e.ycoords)
+                d['indices'].append(e.indices)
+        return DataFrame(d)
+
 
 
 class HLoopGridPlot(GridPlotBase):

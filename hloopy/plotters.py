@@ -332,7 +332,7 @@ class ExtractGridPlot(GridPlotBase):
 
 class ExtractsPlotBase:
     def __init__(self, extract_instances, quantity_to_plot, labels=None,
-                 xfunc=None):
+                 xfunc=None, xsortfunc=None):
         """Plot extracts on their own axis
 
         Args:
@@ -359,6 +359,7 @@ class ExtractsPlotBase:
         self.quantity_to_plot = quantity_to_plot
         self.labels = labels
         self.xfunc = xfunc
+        self.xsortfunc = xsortfunc
 
     def x(self):
        return np.array([self.xfunc(fp, e) for fp, e in self.es])
@@ -367,9 +368,15 @@ class ExtractsPlotBase:
         return np.array([getattr(e, self.quantity_to_plot) 
                          for (fp, e) in self.es])
 
-    def plot(self, *args, **kwargs):
+    def xy_sorted(self):
         x = self.x()
         y = self.y()
+        tsort = sorted(enumerate(self.es), key=lambda x: self.xsortfunc(*x[1]))
+        isort = [x[0] for x in tsort]
+        return x[isort], y[isort]
+
+    def plot(self, *args, **kwargs):
+        x, y = self.xy_sorted()
         fig, ax = plt.subplots()
         ax.plot(x, y, *args, **kwargs)
         return fig, ax

@@ -114,7 +114,7 @@ class GridPlot(GridPlotBase):
         titleparams (dict): Optional kwargs for :code:`ax.set_title()`
     """
     def __init__(self, hloops, hideaxes=True, legend=True, lablevel=None,
-                 titleparams={}):
+                 titleparams={}, title_chars=10):
         if hloops is None or len(hloops) == 0:
             raise ValueError("Must have at least 1 hloop to make a GridPlot.")
         self.hloops = hloops
@@ -126,8 +126,9 @@ class GridPlot(GridPlotBase):
         self.extracts = []
         self.lablevel = lablevel
         self.titleparams = titleparams
+        self.title_chars = title_chars
 
-    def plot(self, **kwargs):
+    def plot(self, title_chars=20, **kwargs):
         """Plot all of `self.hloops` onto a 2d array of `matploblib.axes`.
 
         Args:
@@ -145,7 +146,8 @@ class GridPlot(GridPlotBase):
                 title_style = {'fontsize': 12}
                 title_style.update(self.titleparams)
                 title = self._title_from(hl.fpath, level=self.lablevel,
-                                         maxchars=20, ellipsis=True)
+                                         maxchars=self.title_chars, 
+                                         ellipsis=True)
                 ax.set_title(title, **title_style)
             ln = hl.plot(ax)
             self.lines_plotted[x][y] = ln

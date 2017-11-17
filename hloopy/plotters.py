@@ -181,8 +181,7 @@ class GridPlot(GridPlotBase):
                 d['indices'].append(e.indices)
         return DataFrame(d)
 
-
-
+'''
 class HLoopGridPlot(GridPlotBase):
     def __init__(self, hloop_grid, legend=None, extracts=None, lablevel=None,
                  titleparams={}, hideaxes=True):
@@ -256,7 +255,7 @@ class HLoopGridPlot(GridPlotBase):
                 except TypeError:
                     ax.legend()
         return self.plotted_lines
-
+'''
 
 
 class ExtractGridPlot(GridPlotBase):
@@ -327,3 +326,56 @@ class ExtractGridPlot(GridPlotBase):
         ax.spines["bottom"].set_visible(False)
         ax.xaxis.set_visible(False)
         ax.yaxis.set_visible(False)
+
+
+class ExtractsPlotBase:
+    def __init__(self, extract_instances, quantity_to_plot, labels=None,
+                 xfunc=None):
+        """Plot extracts on their own axis
+
+        Args:
+            extract_instances (dict):  A mapping from 
+                fpath --> hloopy.ExtractBase. This type of object
+                is produced by a GridPlot with extracts added 
+                (GridPlot.extract_instances attribute). The fpath keys are
+                the paths to the datafiles where HLoop objects got their data.
+                There need not be only one type of extract in this dict.
+            quantity_to_plot (callable): Function that gets the attr from the
+                extract that you want to plot. i.e. `lambda x: x.avg_val`, 
+                `lambda x: x.xcoords[0]`, `lambda x: x.ycoords[1]`. This
+                callable takes one argument, the Extract object, and returns
+                one number.
+            labels (collection): Extract objects have a label attr. If that
+                attr is not in this collection, the extract will not be 
+                included in this plot. If `None` then do not filter by label.
+            xfunc (callable): A function that returns the x-axis value for
+                each extract_instance. (fpath, extract) --> number. If `None`
+                then the x axis order will just be a counter index.
+        """
+        self.extract_instances = extract_instances
+        self.es = self._flatten_and_filter(extract_instances, labels)
+        self.quantity_to_plot = quantity_to_plot
+        self.labels = labels
+        self.xfunc = xfunc
+
+    def x(self):
+       return np.array([self.xfunc(fp, e) for fp, e in self.es])
+
+    def y(self):
+        return np.array([getattr(e, self.quantity_to_plot) 
+                         for (fp, e) in self.es])
+
+    def plot(self, *args, **kwargs):
+        x = self.x()
+        y = self.y()
+        fig, ax = plt.subplots()
+        ax.plot(x, y, *args, **kwargs)
+        return fig, ax
+
+    @staticmethod 
+    def _flatten_and_filter(instances, labels=None):
+        if labels is not None:
+           return [(fp, e) for fp, es in instances.items()
+                           for e in es if e.label in labels]
+        else: 
+           return [(fp, e) for fp, es in instances.items() for e in es]

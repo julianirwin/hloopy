@@ -183,7 +183,7 @@ class GridPlot(GridPlotBase):
                 d['indices'].append(e.indices)
         return DataFrame(d)
 
-'''
+
 class HLoopGridPlot(GridPlotBase):
     def __init__(self, hloop_grid, legend=None, extracts=None, lablevel=None,
                  titleparams={}, hideaxes=True):
@@ -249,7 +249,7 @@ class HLoopGridPlot(GridPlotBase):
             for e in self.extracts:
                 e_instance = e(hl)
                 e_instance.plot(ax, **extract_plot_kwargs)
-                self.extract_isntances[hl.fpath].append(e_instance)
+                self.extract_instances[hl.fpath].append(e_instance)
             # Maybe add a legend
             if i == 0 and self.legend:
                 try:
@@ -257,7 +257,6 @@ class HLoopGridPlot(GridPlotBase):
                 except TypeError:
                     ax.legend()
         return self.plotted_lines
-'''
 
 
 class ExtractGridPlot(GridPlotBase):

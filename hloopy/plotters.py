@@ -327,7 +327,30 @@ class ExtractGridPlot(GridPlotBase):
         ax.spines["bottom"].set_visible(False)
         ax.xaxis.set_visible(False)
         ax.yaxis.set_visible(False)
-
+    
+    def histogram(self, xslice=(None, None), yslice=(None, None), ax=None):
+        """Plot histogram of extract values. Must be run 
+        after self.plot()!!!
+        
+        Args:
+            xslice / yslice (tuple): A tuple of ints or None. Used to select
+                which subregion of the 2d grid is to be turned into a 
+                histogram. (None, None) will select the whole range. 
+                (1, -1) will be like list[1:-1].
+            ax (mpl.Axes): Provide if you want this func to plot onto an 
+                existing axes. If None, new axes will be created.
+        """
+        if ax is None:
+            fig, ax = plt.subplots()
+            ret_fig = True
+        else:
+            ret_fig = False
+        vals = np.array(self.extract_avg_vals)
+        vals = vals[xslice[0]:xslice[1], yslice[0]:yslice[1]]
+        vals_flat = vals.reshape(vals.shape[0] * vals.shape[1])
+        ax.hist(vals_flat)
+        return ax if not ret_fig else fig, ax
+        
 
 class ExtractsPlotBase:
     def __init__(self, extract_instances, quantity_to_plot, labels=None,

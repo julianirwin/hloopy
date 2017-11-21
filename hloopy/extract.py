@@ -209,7 +209,7 @@ class Saturation(ExtractBase):
                          **defaults)
         
 
-class ReflectivityScMOKE(hlpy.extract.ExtractBase):
+class ReflectivityScMOKE(ExtractBase):
     def __init__(self, hloop):
         """Reflectivity is read from first line of data file by matching
         with a float regex. Works on Scanning MOKE labview program output.

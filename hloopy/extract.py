@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from os.path import split
+import re
 
 class ExtractBase:
     """Container for parameters extracted from a hysteresis loop.

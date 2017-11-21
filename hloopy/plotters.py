@@ -243,7 +243,7 @@ class HLoopGridPlot(GridPlotBase):
                                          maxchars=20, ellipsis=True)
                 ax.set_title(title, **title_style)
             if simple_label:
-                ax.set_title('(x={}, y={})'.format(col_init, row_init), 
+                ax.set_title('{}, {}'.format(col_init, row_init), 
                              **title_style)
             # Plot extracts
             for e in self.extracts:

@@ -207,6 +207,32 @@ class Saturation(ExtractBase):
         defaults.update(kwargs)
         return ax.hlines(y=self.ys, xmin=self.xs[0], xmax=self.xs[1], 
                          **defaults)
+        
+
+class ReflectivityScMOKE(hlpy.extract.ExtractBase):
+    def __init__(self, hloop):
+        """Reflectivity is read from first line of data file by matching
+        with a float regex. Works on Scanning MOKE labview program output.
+        """
+        self.label = 'reflectivity'
+        self.label_short = 'Ref.(V)'
+        self.hloop = hloop
+
+        self.avg_val = self.reflectivity()
+        self.xcoords = self.xs = None
+        self.ycoords = self.ys = None
+        self.indices = self.ixs = None
+    
+    def plot(self, ax, **kwargs):
+        pass
+    
+    def reflectivity(self):
+        with open(self.hloop.fpath) as f:
+            line = f.readline()
+            ref = re.search("([+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)", line)
+        return float(ref.groups()[0])
+
+
 
 class ExtractWriter:
     """ The extracts given to the writer must have:

@@ -350,7 +350,59 @@ class ExtractGridPlot(GridPlotBase):
         vals_flat = vals.reshape(vals.shape[0] * vals.shape[1])
         ax.hist(vals_flat)
         return ax if not ret_fig else fig, ax
+
         
+class SaturationGridPlot(ExtractGridPlot):    
+    def plot(self, ostring='nwes', colorbar={}, clim=None, hideaxes=False, 
+             **kwargs):
+        """Plot the HLoops on a grid.
+
+        Also adds extract_instances 2d array to this ExtractGridPlot instance
+        if the instances are needed for something morecomplicated than just an
+        imshow of the avg_vals.
+
+
+        Args:
+            - ostring (string): A four character string that determines the
+                orientation transformation applied. Letters correspond to
+                cardinal directions n, e, s, w. The first two characters
+                are the location of (0, 0), the third character is the +x
+                direction and the fourth character is the +y direction. The
+                x and y reffered to are that of typical computer image 
+                coordinates. Top left is (0, 0), +x is to the right and +y is
+                down. The default orientation is 'nwes'.
+            - colorbar (dict): To add a colorbar pass True or a dict of params
+                to be passed to fig.colorbar().
+            - clim (tuple): vmin and vmax to be used for colorbar. Overrides
+                the norm parameter if it is also passed in kwargs below.
+            - hideaxes (bool): Hides the axes.
+            - kwargs: passed to pyplot.imshow call. FOr example:
+                    im = plt.imshow(Hcs, norm=norm, aspect='equal')
+        """
+        ostring = ostring.lower()
+        final_nrows, final_ncols = self.rotated_shape(ostring, self.nrows, 
+                                                      self.ncols)
+        self.extract_avg_vals = self._empty_2darr(final_nrows, final_ncols)
+        self.extract_instances = self._empty_2darr(final_nrows, final_ncols)
+        for i, hl in enumerate(self.hloops):
+            # Plot hloop
+            row_init, col_init = self.hg.mapping[i]
+            row, col = self.rotated_indices(row_init, col_init, self.nrows, 
+                                            self.ncols, ostring)
+            ext = self.extract(hl)
+            self.extract_instances[row][col] = ext
+            avg_val = (ext.xcoords[1] - ext.xcoords[0]) / 2.0
+            self.extract_avg_vals[row][col] = avg_val
+        self.fig, self.ax = plt.subplots()
+        if clim is not None:
+            norm = Normalize(*clim)
+            kwargs.update(norm=norm)
+        res = self.ax.imshow(self.extract_avg_vals, **kwargs)
+        if colorbar:
+            colorbar = {} if colorbar is True else colorbar
+            self.fig.colorbar(res, **colorbar)
+        return res
+
 
 class ExtractsPlotBase:
     def __init__(self, extract_instances, quantity_to_plot, labels=None,

@@ -271,8 +271,8 @@ class ExtractGridPlot(GridPlotBase):
         self.hg = hloop_grid
         self.extract = extract
 
-    def plot(self, ostring='nwes', colorbar={}, clim=None, hideaxes=False, 
-             **kwargs):
+    def plot(self, ostring='nwes', colorbar={}, clim=None, hideaxes=False,
+             missing_val=0.0, **kwargs):
         """Plot the HLoops on a grid.
 
         Also adds extract_instances 2d array to this ExtractGridPlot instance
@@ -314,7 +314,10 @@ class ExtractGridPlot(GridPlotBase):
         if clim is not None:
             norm = Normalize(*clim)
             kwargs.update(norm=norm)
-        res = self.ax.imshow(self.extract_avg_vals, **kwargs)
+        avg_vals_cleaned = [[x if x is not None else missing_val for x in y] 
+                             for y in self.extract_avg_vals]
+        res = self.ax.imshow(avg_vals_cleaned, **kwargs)
+        self.extract_avg_vals = avg_vals_cleaned
         if colorbar:
             colorbar = {} if colorbar is True else colorbar
             self.fig.colorbar(res, **colorbar)

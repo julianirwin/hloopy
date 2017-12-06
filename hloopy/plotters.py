@@ -328,7 +328,7 @@ class ExtractGridPlot(GridPlotBase):
         ax.xaxis.set_visible(False)
         ax.yaxis.set_visible(False)
     
-    def histogram(self, xslice=(None, None), yslice=(None, None), ax=None):
+    def histogram(self, xslice=(None, None), yslice=(None, None), ax=None, hist_kwargs={}):
         """Plot histogram of extract values. Must be run 
         after self.plot()!!!
         
@@ -348,7 +348,7 @@ class ExtractGridPlot(GridPlotBase):
         vals = np.array(self.extract_avg_vals)
         vals = vals[xslice[0]:xslice[1], yslice[0]:yslice[1]]
         vals_flat = vals.reshape(vals.shape[0] * vals.shape[1])
-        ax.hist(vals_flat)
+        ax.hist(vals_flat, **hist_kwargs)
         return ax if not ret_fig else fig, ax
 
         
